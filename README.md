@@ -11,7 +11,12 @@ it basicly recieves 4 parameters :
 example : 
 
 <input type="text" class="form-control" placeholder="Name..." typeaheadautocomplete [objectsDataSet]="clientList" [labelAtt]="'Firstname'" [name]="'clients'" [handleFunction]="logClient">
+
 as you can see : 
 clientList is an array of "client" objects , let's say {"Fistname":"Billel","Lastname":"Guerfa",....}
 we use the Firstname attribute for the autocomplete list.
 logClient here recieves a client object and displays it.
+
+#Dependencies : 
+just declare the typeahead script at the index.html level.
+- typeahead : https://twitter.github.io/typeahead.js/
