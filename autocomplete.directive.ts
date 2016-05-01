@@ -37,17 +37,15 @@ export class AutocompleteDirective implements OnInit {
             
         }
      
-    setLabels(){
+    setLabels(){ //this method initializes the labelsArray for typeahead.
         let label;
         this.objectsDataSet.forEach(object => {
             label = this.uniqLabel(object[this.labelAtt]);
-            console.log(label);
-            
             this.map[label] = object;
             this.labelsDataSet.push(label);
         });
     }
-    uniqLabel(label:string): string{
+    uniqLabel(label:string): string{ //this method creates unique labels by adding blancs.
         let blanc = "";
         while(this.map[label]){
             blanc += " ";
@@ -56,9 +54,7 @@ export class AutocompleteDirective implements OnInit {
         return label;
     }
     ngOnInit(){
-        console.log(this.objectsDataSet);
         this.setLabels();
-        console.log(this.labelsDataSet);
         
              this._zone.run(() => {
                  $(this._el.nativeElement).typeahead({
