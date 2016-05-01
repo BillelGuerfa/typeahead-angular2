@@ -9,8 +9,9 @@ it basicly recieves 4 parameters :
 - @Input() labelAtt;// the label attribute (this value is displayed to the user , it must be a string).
 
 example : 
-
+```
 <input type="text" class="form-control" placeholder="Name..." typeaheadautocomplete [objectsDataSet]="clientList" [labelAtt]="'Firstname'" [name]="'clients'" [handleFunction]="logClient">
+```
 
 as you can see : 
 clientList is an array of "client" objects , let's say {"Fistname":"Billel","Lastname":"Guerfa",....}
