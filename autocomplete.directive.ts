@@ -14,26 +14,26 @@ export class AutocompleteDirective implements OnInit,OnChanges {
         this.objectsDataSet = changes.objectsDataSet.currentValue;
         if(this.objectsDataSet){
             console.log(this.objectsDataSet);
-        this.setLabels();
-        console.log(this.labelsDataSet);
-        
-             this._zone.run(() => {
-                 $(this._el.nativeElement).typeahead({
-                 hint: true,
-                 highlight: true,
-                 minLength: 1
-            },
-            {
-                name: this.name,
-                //TODO: Add list of clients here.
-                source: this.substringMatcher(this.labelsDataSet)
+            this.setLabels();
+            console.log(this.labelsDataSet);
+            
+                this._zone.run(() => {
+                    $(this._el.nativeElement).typeahead({
+                    hint: true,
+                    highlight: true,
+                    minLength: 1
+                },
+                {
+                    name: this.name,
+                    //TODO: Add list of clients here.
+                    source: this.substringMatcher(this.labelsDataSet)
+                });
+                $(this._el.nativeElement).bind('typeahead:select', (ev, suggestion) => {
+                        //TODO: handle the selection here.
+                        this.handleFunction(this.map[suggestion]);
+                });
+                
             });
-            $(this._el.nativeElement).bind('typeahead:select', (ev, suggestion) => {
-                    //TODO: handle the selection here.
-                    this.handleFunction(this.map[suggestion]);
-            });
-             
-         });
         }
     }
     labelsDataSet = [];
@@ -86,27 +86,7 @@ export class AutocompleteDirective implements OnInit,OnChanges {
         return label;
     }
     ngOnInit(){
-        console.log(this.objectsDataSet);
-        this.setLabels();
-        console.log(this.labelsDataSet);
-        
-             this._zone.run(() => {
-                 $(this._el.nativeElement).typeahead({
-                 hint: true,
-                 highlight: true,
-                 minLength: 1
-            },
-            {
-                name: this.name,
-                //TODO: Add list of clients here.
-                source: this.substringMatcher(this.labelsDataSet)
-            });
-            $(this._el.nativeElement).bind('typeahead:select', (ev, suggestion) => {
-                    //TODO: handle the selection here.
-                    this.handleFunction(this.map[suggestion]);
-            });
-             
-         });
+       
     }
      
 }
