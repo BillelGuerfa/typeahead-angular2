@@ -1,14 +1,41 @@
-import {Directive, ElementRef, NgZone, Input, OnInit } from 'angular2/core';
+import {Directive, ElementRef, NgZone, Input, OnInit, OnChanges  } from 'angular2/core';
 declare var $;
 @Directive({ 
     selector: '[typeaheadautocomplete]' 
 })
-export class AutocompleteDirective implements OnInit {
+export class AutocompleteDirective implements OnInit,OnChanges {
     
     @Input() name;
     @Input() objectsDataSet;
     @Input() handleFunction;
     @Input() labelAtt;
+    
+    ngOnChanges(changes: any){
+        this.objectsDataSet = changes.objectsDataSet.currentValue;
+        if(this.objectsDataSet){
+            console.log(this.objectsDataSet);
+        this.setLabels();
+        console.log(this.labelsDataSet);
+        
+             this._zone.run(() => {
+                 $(this._el.nativeElement).typeahead({
+                 hint: true,
+                 highlight: true,
+                 minLength: 1
+            },
+            {
+                name: this.name,
+                //TODO: Add list of clients here.
+                source: this.substringMatcher(this.labelsDataSet)
+            });
+            $(this._el.nativeElement).bind('typeahead:select', (ev, suggestion) => {
+                    //TODO: handle the selection here.
+                    this.handleFunction(this.map[suggestion]);
+            });
+             
+         });
+        }
+    }
     labelsDataSet = [];
     map = {};
     substringMatcher(strs) {
@@ -37,15 +64,20 @@ export class AutocompleteDirective implements OnInit {
             
         }
      
-    setLabels(){ //this method initializes the labelsArray for typeahead.
+    setLabels(){
         let label;
-        this.objectsDataSet.forEach(object => {
+        if(this.objectsDataSet){
+            this.objectsDataSet.forEach(object => {
             label = this.uniqLabel(object[this.labelAtt]);
+            console.log(label);
+            
             this.map[label] = object;
             this.labelsDataSet.push(label);
         });
+       }
+        
     }
-    uniqLabel(label:string): string{ //this method creates unique labels by adding blancs.
+    uniqLabel(label:string): string{
         let blanc = "";
         while(this.map[label]){
             blanc += " ";
@@ -54,7 +86,9 @@ export class AutocompleteDirective implements OnInit {
         return label;
     }
     ngOnInit(){
+        console.log(this.objectsDataSet);
         this.setLabels();
+        console.log(this.labelsDataSet);
         
              this._zone.run(() => {
                  $(this._el.nativeElement).typeahead({
